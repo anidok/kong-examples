@@ -1,0 +1,46 @@
+_format_version: "3.0"
+
+services:
+  - name: service1
+    url: http://service1:8081
+    routes:
+      - name: service1-route1
+        paths:
+          - /service1/api1
+        strip_path: true
+        plugins:
+          - name: request-transformer
+            config:
+              replace:
+                uri: /api1
+      - name: service1-route2
+        paths:
+          - /service1/api2
+        strip_path: true
+        plugins:
+          - name: request-transformer
+            config:
+              replace:
+                uri: /api2
+
+  - name: service2
+    url: http://service2:8082
+    routes:
+      - name: service2-route1
+        paths:
+          - /service2/api1
+        strip_path: true
+        plugins:
+          - name: request-transformer
+            config:
+              replace:
+                uri: /api1
+      - name: service2-route2
+        paths:
+          - /service2/api2
+        strip_path: true
+        plugins:
+          - name: request-transformer
+            config:
+              replace:
+                uri: /api2 
