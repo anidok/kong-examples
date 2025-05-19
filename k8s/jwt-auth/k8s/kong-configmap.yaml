@@ -1,0 +1,84 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kong-config
+  namespace: kong-system
+data:
+  kong.yml: |
+    _format_version: "3.0"
+
+    services:
+      - name: service1
+        url: http://service1.kong-hello-world.svc.cluster.local:8081
+        plugins:
+          - name: jwt
+            config:
+              key_claim_name: iss
+              claims_to_verify:
+                - exp
+          - name: acl
+            config:
+              allow: ["user123-group"]
+        routes:
+          - name: service1-route1
+            paths:
+              - ~/service1/api1$
+            strip_path: true
+            plugins:
+              - name: request-transformer
+                config:
+                  replace:
+                    uri: /api1
+          - name: service1-route2
+            paths:
+              - ~/service1/api2$
+            strip_path: true
+            plugins:
+              - name: request-transformer
+                config:
+                  replace:
+                    uri: /api2
+
+      - name: service2
+        url: http://service2.kong-hello-world.svc.cluster.local:8082
+        plugins:
+          - name: jwt
+            config:
+              key_claim_name: iss
+              claims_to_verify:
+                - exp
+          - name: acl
+            config:
+              allow: ["user123-group"]
+        routes:
+          - name: service2-route1
+            paths:
+              - ~/service2/api1$
+            strip_path: true
+            plugins:
+              - name: request-transformer
+                config:
+                  replace:
+                    uri: /api1
+          - name: service2-route2
+            paths:
+              - ~/service2/api2$
+            strip_path: true
+            plugins:
+              - name: request-transformer
+                config:
+                  replace:
+                    uri: /api2
+
+    consumers:
+      - username: jwt-user
+        custom_id: user123
+
+    acls:
+      - consumer: jwt-user
+        group: user123-group
+
+    jwt_secrets:
+      - consumer: jwt-user
+        key: kong-jwt-auth
+        secret: some-key

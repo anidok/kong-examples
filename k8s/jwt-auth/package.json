@@ -1,0 +1,15 @@
+{
+  "name": "jwt-auth",
+  "version": "1.0.0",
+  "description": "This project demonstrates a Kong API Gateway setup with two microservices in Kubernetes. The services are deployed in separate namespaces with Kong in the `kong-system` namespace and the applications in the `kong-hello-world` namespace.",
+  "main": "generate-jwt.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "jsonwebtoken": "^9.0.2"
+  }
+}
